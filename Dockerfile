@@ -8,7 +8,7 @@ RUN apk --no-cache update && \
     update-ca-certificates && \
     pip --no-cache-dir install awscli==${AWS_CLI_VERSION}
 
-COPY s3.sh mysqldump-to-s3.sh restore-mysql-rsync-s3.sh /
+COPY s3.sh mysqldump-to-s3.sh restore-mysql-rsync-s3.sh gzipped-s3.sh /
 RUN chmod a+x /*.sh
 
 WORKDIR /data

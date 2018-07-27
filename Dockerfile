@@ -4,7 +4,7 @@ FROM alpine:3.8
 ARG AWS_CLI_VERSION=1.15.65
 
 RUN apk --no-cache update && \
-    apk --no-cache add python py-pip py-setuptools ca-certificates mariadb-client rsync && \
+    apk --no-cache add python py-pip py-setuptools ca-certificates mariadb-client rsync tzdata && \
     update-ca-certificates && \
     pip --no-cache-dir install awscli==${AWS_CLI_VERSION}
 

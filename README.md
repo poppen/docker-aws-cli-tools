@@ -18,6 +18,23 @@ To run:
 docker run [opts] [env_vars] jetbrainsinfra/aws-cli-tools /mysqldump-to-s3.sh 
 ```
 
+## pgdump-to-s3
+
+To dump RDS databases and put the result to S3.
+
+There are enviromental variables to set:
+* DATABASE_HOST
+* DATABASE_USERNAME
+* DATABASE_PASSWORD
+* DATABASE_NAME
+* DATABASE_EXTRA_OPTS
+* S3_BUCKET
+
+To run:
+```
+docker run [opts] [env_vars] poppen/aws-cli-tools /pgdump-to-s3.sh
+```
+
 ## s3
 
 To sync data to S3.

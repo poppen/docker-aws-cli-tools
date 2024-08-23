@@ -47,3 +47,5 @@ else
     echo "Cleaning up local backup file..."
     rm "$BACKUP_FILE"
 fi
+
+echo "Backup process completed at $(date)"

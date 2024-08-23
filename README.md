@@ -1,71 +1,53 @@
 # aws-cli-tools
 
-Kinda a swiss knife for various tasks using aws-cli.
+A Swiss Army knife for various tasks using aws-cli.
 
-## mysqldump-to-s3
+## db-backup-to-s3
 
-To dump RDS databases and put the result to S3.
+To dump MySQL or PostgreSQL databases and upload the result to S3.
 
-There are enviromental variables to set:
-* DATABASE_HOST
-* DATABASE_USERNAME
-* DATABASE_PASSWORD
-* DATABASE_NAME
-* S3_BUCKET
+Environmental variables to set:
 
-To run:
-```
-docker run [opts] [env_vars] jetbrainsinfra/aws-cli-tools /mysqldump-to-s3.sh 
-```
-
-## pgdump-to-s3
-
-To dump RDS databases and put the result to S3.
-
-There are enviromental variables to set:
-* DATABASE_HOST
-* DATABASE_USERNAME
-* DATABASE_PASSWORD
-* DATABASE_NAME
-* DATABASE_EXTRA_OPTS
-* S3_BUCKET
+* DATABASE_TYPE (required, set to 'mysql' or 'postgresql')
+* DATABASE_HOST (required)
+* DATABASE_USERNAME (required)
+* DATABASE_PASSWORD (required)
+* DATABASE_NAME (required)
+* S3_BUCKET (required)
+* STORAGE_CLASS (optional, default: STANDARD)
+* COMPRESSION_TYPE (optional, 'gzip' or 'bzip2', default: bzip2)
+* DATABASE_PORT (optional, for PostgreSQL)
+* DATABASE_EXTRA_OPTS (optional)
+* S3_EXTRA_ARGS (optional)
 
 To run:
-```
-docker run [opts] [env_vars] poppen/aws-cli-tools /pgdump-to-s3.sh
+
+```bash
+docker run [opts] [env_vars] ghcr.io/poppen/aws-cli-tools /db-backup-to-s3.sh
 ```
 
 ## s3
 
-To sync data to S3.
+To sync or backup data to S3.
 
-There are enviromental variables to set:
-* ORIGIN
-* DESTINATION
+Environmental variables to set:
 
-To run:
-```
-docker run [opts] [env_vars] jetbrainsinfra/aws-cli-tools /s3.sh 
-```
-
-## restore-mysql-rsync-s3.sh
-
-To restore combined backup from various places.
-
-There are enviromental variables to set:
-* MYSQL_HOST
-* MYSQL_DB
-* MYSQL_USER
-* MYSQL_PASSWORD
-* MYSQL_DUMP_LOCATION
-* FILE_DUMP_LOCATION
-* FILE_ORIGIN
-* FILE_DESTINATION
-* BACKUP_S3_ORIGIN
-* DATA_S3_ORIGIN
-* DATA_S3_DESTINATION
+* ORIGIN (required)
+* DESTINATION (required)
+* STORAGE_CLASS (optional, default: STANDARD)
+* COMPRESSION_TYPE (optional, 'gzip' or 'bzip2', default: gzip)
+* SYNC_ONLY (optional, 'true' or 'false', default: false)
+* S3_EXTRA_ARGS (optional)
 
 To run:
+
+```bash
+docker run [opts] [env_vars] ghcr.io/poppen/aws-cli-tools /s3.sh
 ```
-docker run [opts] [env_vars] jetbrainsinfra/aws-cli-tools /restore-mysql-rsync-s3.sh 
-```
+
+## Note
+
+1. The `bzipped-s3.sh` and `gzipped-s3.sh` scripts have been replaced by the unified `s3.sh` script.
+2. The `mysqldump-to-s3.sh` and `pgdump-to-s3.sh` scripts have been replaced by the unified `db-backup-to-s3.sh` script, which supports both MySQL and PostgreSQL.
+3. The `restore-mysql-rsync-s3.sh` and `restore-postgres-rsync-s3.sh` scripts have been removed.
+4. This project has migrated from DockerHub to GitHub Container Registry (ghcr). Please use `ghcr.io/poppen/aws-cli-tools` instead of `poppen/aws-cli-tools` when pulling the image.

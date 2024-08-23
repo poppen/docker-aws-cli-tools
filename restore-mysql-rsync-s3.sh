@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/bin/bash
 set -e
 
 aws s3 cp s3://${BACKUP_S3_ORIGIN}/`aws s3 ls ${BACKUP_S3_ORIGIN}/${MYSQL_DUMP_LOCATION}/ --recursive | sort | tail -n 1 | awk '{print $4}'` ./latest.sql.bz2

@@ -3,11 +3,11 @@ set -euo pipefail
 
 # Check required environment variables
 : "${ORIGIN:?ORIGIN must be set}"
-: "${DESTINATION:?DESTINATION must be set}"
+: "${S3_BUCKET:?S3_BUCKET must be set}"
 
 # Set default values
 STORAGE_CLASS=${STORAGE_CLASS:-STANDARD}
-COMPRESSION_TYPE=${COMPRESSION_TYPE:-gzip}
+COMPRESSION_TYPE=${COMPRESSION_TYPE:-bzip2}
 SYNC_ONLY=${SYNC_ONLY:-false}
 S3_EXTRA_ARGS=${S3_EXTRA_ARGS:-}
 
@@ -29,7 +29,7 @@ esac
 
 if [ "$SYNC_ONLY" = "true" ]; then
     echo "Syncing files to S3..."
-    aws s3 sync "$ORIGIN" "s3://${DESTINATION}" \
+    aws s3 sync "$ORIGIN" "s3://${S3_BUCKET}" \
         --storage-class "$STORAGE_CLASS" \
         "$S3_EXTRA_ARGS"
 else
@@ -40,7 +40,7 @@ else
     tar $TAR_OPTS "$BACKUP_FILE" "$ORIGIN"
 
     echo "Uploading backup to S3..."
-    aws s3 cp "$BACKUP_FILE" "s3://${DESTINATION}" \
+    aws s3 cp "$BACKUP_FILE" "s3://${S3_BUCKET}" \
         --storage-class "$STORAGE_CLASS" \
         "$S3_EXTRA_ARGS"
 
